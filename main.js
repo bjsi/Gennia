@@ -7,7 +7,6 @@
 
 // Modules to control application life and create native browser window
 const { app, ipcMain, BrowserWindow, dialog, Tray, Menu } = require('electron')
-const { setupTitlebar, attachTitlebarToWindow } = require("custom-electron-titlebar/main")
 const path = require('path')
 const { Server } = require("socket.io")
 const crypto = require('crypto');
@@ -204,7 +203,6 @@ async function handleGame(io) {
 
 async function createWindow() {
   // Create the browser window
-  setupTitlebar();
 
   mainWindow = new BrowserWindow({
     width: 1000,
@@ -220,7 +218,6 @@ async function createWindow() {
     icon: 'assets/img/favicon-new.png'
   })
 
-  attachTitlebarToWindow(mainWindow);
   mainWindow.loadFile('index.html')
 
   var trayMenuTemplate = [

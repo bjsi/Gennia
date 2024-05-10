@@ -6,10 +6,8 @@
  * 
  */
 const { contextBridge, ipcRenderer, app, Menu, dialog } = require('electron')
-const { Titlebar, TitlebarColor } = require("custom-electron-titlebar");
 const { getIPAdress } = require('./util')
 const path = require('path');
-var titlebar;
 // const menu = Menu.buildFromTemplate(template)
 
 contextBridge.exposeInMainWorld('electron', {
@@ -17,18 +15,12 @@ contextBridge.exposeInMainWorld('electron', {
   userLogin: (username) => { ipcRenderer.send('user-login', { username: username }) },
   changeServerConfig: (data) => { ipcRenderer.send('change-server-config', data) },
   initServerConfig: () => { window.server_error = false },
-  setTitle: (title) => { titlebar.updateTitle(title) }
+  setTitle: (title) => {  }
 })
 
 window.addEventListener('DOMContentLoaded', async () => {
   console.log('content loaded');
-  titlebar = new Titlebar({
-    icon: path.join(__dirname, 'assets/img/favicon-new.png'),
-    backgroundColor: TitlebarColor.fromHex('#596975b3')
-    // menu: menu
-  });
 
-  titlebar.updateTitle('Home - Gennia')
 
   ipcRenderer.on('get-info', (_, info) => {
     document.getElementById('leftfooter').innerHTML = `Gennia V${info}`
@@ -38,7 +30,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Toggle Dashboard
   ipcRenderer.on('toggle-dashboard', (_, username, serverStatus, serverPort) => {
-    titlebar.updateTitle('Dashboard - Gennia');
     document.getElementsByClassName('container')[0].innerHTML = `<h1 class="fadeInDown" style="font-size:2.4rem!important">Hi <p style="display: inline" class="req" id="username">${username}</p>
 		</h1>
 		<h3 class="fadeInDown">Welcome to Gennia Dashboard.<br>Please choose a selection.</h3>
